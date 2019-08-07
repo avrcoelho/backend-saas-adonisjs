@@ -16,6 +16,13 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route.post('/sessions', 'SessionCOntroller.store')
+
+Route.group(() => {
+  // apiOnly tira os metodo create e edit
+  Route.resource('teams', 'TeamController').apiOnly()
+}).middleware('auth')
+
+Route.group(() => {
+  Route.post('invites', 'InviteController.store')
+}).middleware(['auth', 'team'])

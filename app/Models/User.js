@@ -27,8 +27,8 @@ class User extends Model {
 
   // quais times o usuario pertence
   teams () {
-     return this.belongsToMany('App/Models/Team')
-      .pivotModel('App/Models/UserTeam');
+    return this.belongsToMany('App/Models/Team')
+      .pivotModel('App/Models/UserTeam')
   }
 }
 
