@@ -13,7 +13,7 @@ class TeamSchema extends Schema {
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('teams')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
       table.string('slug').notNullable().unique()

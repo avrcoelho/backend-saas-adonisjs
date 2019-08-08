@@ -20,7 +20,7 @@ class InviteSchema extends Schema {
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('teams')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
       table.string('email').notNullable()

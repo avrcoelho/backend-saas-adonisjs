@@ -6,7 +6,7 @@ const Model = use('Model')
 class UserTeam extends Model {
   // relacionamento para usuário
   user () {
-    return this.belongsTo('App/Models/User');
+    return this.belongsTo('App/Models/User')
   }
 }
 
