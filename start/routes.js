@@ -16,7 +16,8 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.post('/sessions', 'SessionCOntroller.store')
+Route.post('sessions', 'SessionController.store')
+Route.post('users', 'UserController.store')
 
 Route.group(() => {
   // apiOnly tira os metodo create e edit
