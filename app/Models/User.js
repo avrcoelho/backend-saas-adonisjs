@@ -21,6 +21,10 @@ class User extends Model {
     })
   }
 
+  teamJoins () {
+    return this.hasMany('App/Models/UserTeam')
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
@@ -29,6 +33,34 @@ class User extends Model {
   teams () {
     return this.belongsToMany('App/Models/Team')
       .pivotModel('App/Models/UserTeam')
+  }
+
+  //  verificar se o usuario pertence a alguma role
+  async is (expression) {
+    // buscando o time do usuario que esta fazendo a reuqisicao
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .firts()
+
+    return team.is(expression)
+  }
+
+  async can (expression) {
+    // buscando o time do usuario que esta fazendo a reuqisicao
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .firts()
+
+    return team.can(expression)
+  }
+
+  async scope (required) {
+    // buscando o time do usuario que esta fazendo a reuqisicao
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .firts()
+
+    return team.scope(required)
   }
 }
 

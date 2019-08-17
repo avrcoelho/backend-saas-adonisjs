@@ -16,16 +16,52 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.post('sessions', 'SessionController.store')
-Route.post('users', 'UserController.store')
+Route.post('sessions', 'SessionController.store').validator('Session')
+Route.post('users', 'UserController.store').validator('User')
 
 Route.group(() => {
+  Route.get('roles', 'RoleController.index')
   // apiOnly tira os metodo create e edit
-  Route.resource('teams', 'TeamController').apiOnly()
+  Route.resource('teams', 'TeamController')
+    .apiOnly()
+    .validator(
+      new Map(
+        [
+          [
+            ['teams.store', 'teams.update'],
+            ['Team'] // chama os validator tema
+          ]
+        ]
+      ))
 }).middleware('auth')
 
 Route.group(() => {
-  Route.post('invites', 'InviteController.store')
+  Route.post('invites', 'InviteController.store').validator('Invite').middleware('can:invites_create')
 
-  Route.resource('projects', 'ProjectController').apiOnly()
+  Route.resource('projects', 'ProjectController')
+    .apiOnly()
+    .validator(
+      new Map(
+        [
+          [
+            ['projects.store', 'projects.update'],
+            ['Project'] // chama os validator tema
+          ]
+          //
+          // se tivesse outros validators poderia ir passando aqui
+        ]
+      ))
+    .middleware(
+      new Map(
+        [
+          [
+            ['projects.store', 'projects.update'],
+            ['can:projects_create']
+          ]
+        ]
+      ))
+  Route.get('members', 'memberController.index')
+  Route.put('members', 'memberController.update').middleware('is:administrator')
+
+  Route.get('permissions', 'PermissionController.show  ')
 }).middleware(['auth', 'team'])
